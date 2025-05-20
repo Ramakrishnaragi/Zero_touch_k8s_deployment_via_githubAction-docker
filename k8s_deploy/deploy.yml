@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-hpa
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: ramakrishnaragi/flask_app
+        ports:
+        - containerPort: 5000
+        resources:
+          # You must specify requests for CPU to autoscale
+          # based on CPU utilization
+          requests:
+            cpu: "250m"
